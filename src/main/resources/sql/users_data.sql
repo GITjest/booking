@@ -1,0 +1,1 @@
+INSERT INTO users (user_id, `name`, date_of_birth, email, sex) VALUES (1, "Adam", "2000-11-11", "adam@mail.com", "male");
