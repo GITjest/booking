@@ -17,6 +17,7 @@ import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,6 +53,24 @@ class UserServiceTest {
     @Test
     public void getUser_whenUserNotFound() {
         assertThrows(UserNotFoundException.class, () -> userService.getUser(1L));
+    }
+
+    @Test
+    public void save_returnUser() throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date dateOfBirth = dateFormat.parse("2000-11-11");
+        User user = new User(1L, "Adam", dateOfBirth, "adam@mail.com", "male");
+
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User savedUser = userService.save(user);
+
+        assertThat(savedUser.getUserId()).isEqualTo(1L);
+        assertThat(savedUser.getName()).isEqualTo("Adam");
+        assertThat(savedUser.getDateOfBirth()).isEqualTo(dateOfBirth);
+        assertThat(savedUser.getEmail()).isEqualTo("adam@mail.com");
+        assertThat(savedUser.getSex()).isEqualTo("male");
     }
 
 }
