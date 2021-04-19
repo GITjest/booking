@@ -28,4 +28,10 @@ public class UserController {
         return e.getMessage();
     }
 
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User addUser(@RequestBody User user) {
+        return userService.save(user);
+    }
+
 }
